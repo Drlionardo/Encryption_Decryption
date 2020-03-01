@@ -69,7 +69,7 @@ interface Algorithm{
     String Encrypt(String data, int key);
     String Decrypt(String data, int key);
 }
-class ShiftAlg implements Algorithm{
+class UnicodeAlg implements Algorithm{
     @Override
     public String Encrypt(String data, int key) {
         char[] a = data.toCharArray();
@@ -88,14 +88,42 @@ class ShiftAlg implements Algorithm{
         return String.valueOf(a);
     }
 }
-class UnicodeAlg implements Algorithm{
+class ShiftAlg implements Algorithm{
     @Override
     public String Encrypt(String data, int key) {
-        return null;
+        char[] a = data.toCharArray();
+        String alphabet = "abcdefghijklmnopqrstuvwxyz";
+        String alphabetCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (int i = 0; i < a.length; i++) {
+            if(Character.isAlphabetic(a[i])){
+                for (int j = 0; j < alphabet.length(); j++) {
+                    if(a[i]==alphabet.charAt(j)) a[i]=alphabet.charAt((j+key)%26);
+                    else if(a[i]==alphabetCaps.charAt(j)) a[i]=alphabetCaps.charAt((j+key)%26);
+                }
+            }
+        }
+        return String.valueOf(a);
     }
 
     @Override
     public String Decrypt(String data, int key) {
-        return null;
+        char[] a = data.toCharArray();
+        String alphabet = "abcdefghijklmnopqrstuvwxyz";
+        String alphabetCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (int i = 0; i < a.length; i++) {
+            if(Character.isAlphabetic(a[i])){
+                for (int j = 0; j < alphabet.length(); j++) {
+                    if(a[i]==alphabet.charAt(j)){
+                        a[i]=alphabet.charAt((j-key+26)%26);
+                        break;
+                    }
+                    else if(a[i]==alphabetCaps.charAt(j)){
+                        a[i]=alphabetCaps.charAt((j-key+26)%26);
+                        break;
+                    }
+                }
+            }
+        }
+        return String.valueOf(a);
     }
 }
