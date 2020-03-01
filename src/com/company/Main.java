@@ -37,7 +37,6 @@ class Operator {
                     break;
             }
         }
-
     }
     public String readData(){
         return this.data=data;
@@ -61,35 +60,42 @@ class Operator {
             a=new UnicodeAlg();
         }
         assert a != null;
-        if(mode.equals("encrypt")) data = a.Encrypt(data);
-        else if(mode.equals("decrypt")) data = a.Decrypt(data);
+        if(mode.equals("enc")) data = a.Encrypt(data,key);
+        else if(mode.equals("dec")) data = a.Decrypt(data,key);
 }
-
 
 }
 interface Algorithm{
-    String Encrypt(String data);
-    String Decrypt(String data);
+    String Encrypt(String data, int key);
+    String Decrypt(String data, int key);
 }
 class ShiftAlg implements Algorithm{
     @Override
-    public String Encrypt(String data) {
-        return null;
+    public String Encrypt(String data, int key) {
+        char[] a = data.toCharArray();
+        for (int i = 0; i < a.length; i++) {
+            a[i] += key;
+        }
+        return String.valueOf(a);
     }
 
     @Override
-    public String Decrypt(String data) {
-        return null;
+    public String Decrypt(String data, int key) {
+        char[] a = data.toCharArray();
+        for (int i = 0; i < a.length; i++) {
+            a[i]-=key;
+        }
+        return String.valueOf(a);
     }
 }
 class UnicodeAlg implements Algorithm{
     @Override
-    public String Encrypt(String data) {
+    public String Encrypt(String data, int key) {
         return null;
     }
 
     @Override
-    public String Decrypt(String data) {
+    public String Decrypt(String data, int key) {
         return null;
     }
 }
