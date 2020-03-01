@@ -21,9 +21,23 @@ class Operator {
 
     public Operator(String[] args) {
         //Read args:
-        for(String s : args){
-
+        for(int i =0; i < args.length;i++){
+            switch (args[i]){
+                case "-mode":
+                    this.mode=args[i+1];
+                break;
+                case "-alg":
+                    this.alg=args[i+1];
+                    break;
+                case "-key":
+                    this.key= Integer.parseInt(args[i+1]);
+                    break;
+                case"-data":
+                    this.data=args[i+1];
+                    break;
+            }
         }
+
     }
     public String readData(){
         return this.data=data;
