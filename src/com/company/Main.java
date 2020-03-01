@@ -1,5 +1,11 @@
 package com.company;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -18,6 +24,8 @@ class Operator {
     private String alg = "shift";
     private int key = 0;
     private String data="";
+    private String in="";
+    private String out="";
 
     public Operator(String[] args) {
         //Read args:
@@ -35,18 +43,52 @@ class Operator {
                 case"-data":
                     this.data=args[i+1];
                     break;
+                case"-in":
+                    this.in=args[i+1];
+                    break;
+                case"-out":
+                    this.out=args[i+1];
+                    break;
             }
         }
     }
-    public String readData(){
-        return this.data=data;
+    public void readData() {
+        //Read from console
+        Scanner scan = null;
+        if (in.isEmpty()) {
+            scan = new Scanner(System.in);
+        } else {
+            File inputFile = new File(data);
+            try {
+                scan = new Scanner(inputFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        //Reading data using scanner:
+        data=scan.next();
     }
     private void writeData() {
-        System.out.println(data);
+        //If no output file in args -> to console
+        if(out.isEmpty()){
+            System.out.println(data);
+        } else{ // Write -> output File
+            try {
+                File output = new File(this.out);
+                if (output.createNewFile()) {
+                    FileWriter fw = new FileWriter(output);
+                    fw.write(data);
+                    fw.close();
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void operate() {
-        readData();
+        if(data.isEmpty()) readData();
         operateData();
         writeData();
         }
